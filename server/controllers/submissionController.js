@@ -46,18 +46,37 @@ const submitTask = async (req, res) => {
 // @desc  Get submission for a specific task (admin use)
 // @route GET /api/submissions/:taskId
 // @access Protect only — no admin guard
+// @desc  Get submission for a specific task
+// @route GET /api/submissions/:taskId
+// @access Admin or owner of the submission
 const getSubmission = async (req, res) => {
   try {
-    const submission = await Submission.findOne({ taskId: req.params.taskId })
-      .populate('talentId', 'name email');
+    let submission;
+
+    if (req.user.role === 'Admin') {
+      // Admins can view any submission
+      submission = await Submission.findOne({
+        taskId: req.params.taskId,
+      }).populate('talentId', 'name email');
+    } else {
+      // Talents can only view their own submission
+      submission = await Submission.findOne({
+        taskId: req.params.taskId,
+        talentId: req.user._id,
+      }).populate('talentId', 'name email');
+    }
 
     if (!submission) {
-      return res.status(404).json({ message: 'No submission found for this task' });
+      return res.status(404).json({
+        message: 'No submission found',
+      });
     }
 
     res.json(submission);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
