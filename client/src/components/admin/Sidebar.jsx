@@ -52,8 +52,10 @@ const Sidebar = () => {
   const location  = useLocation();
 
   return (
-    <aside className="fixed inset-y-0 left-0 w-[240px] flex flex-col z-50"
-      style={{ background: '#0D0D0D' }}>
+    <aside
+      className="hidden lg:flex fixed inset-y-0 left-0 w-[240px] flex-col z-50"
+      style={{ background: "#0D0D0D" }}
+    >
 
       {/* Brand */}
       <div className="flex items-center justify-center px-5 py-6">
