@@ -83,6 +83,18 @@ const getAllSubmissions = async (req, res) => {
 const reviewSubmission = async (req, res) => {
   const { reviewStatus } = req.body;
 
+  const validStatuses = [
+    "Approved",
+    "Rejected",
+    "Revision Requested",
+  ];
+
+  if (!validStatuses.includes(reviewStatus)) {
+    return res.status(400).json({
+      message: "Invalid review status",
+    });
+  }
+
   try {
     // — any string is accepted and stored
     const submission = await Submission.findByIdAndUpdate(
@@ -96,6 +108,12 @@ const reviewSubmission = async (req, res) => {
     if (!submission) {
       return res.status(404).json({ message: 'Submission not found' });
     }
+    await Task.findByIdAndUpdate(
+      submission.taskId._id,
+      {
+        status: reviewStatus,
+      }
+    );
     // — task stays 'Submitted' even after the submission is Approved/Rejected
     // Proper flow: also update Task.status to 'Approved'/'Rejected'
 
