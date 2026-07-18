@@ -196,8 +196,8 @@ jobs:
             const author = prObj.user ? prObj.user.login : '';
             const runUrl = `${process.env.GITHUB_SERVER_URL}/${owner}/${repo}/actions/runs/${process.env.GITHUB_RUN_ID}`;
 
-            const clientRan = '${{ needs.test-client.result }}' !== 'skipped';
-            const serverRan = '${{ needs.test-server.result }}' !== 'skipped';
+            const clientRan = '${{ needs['test-client'].result }}' !== 'skipped';
+            const serverRan = '${{ needs['test-server'].result }}' !== 'skipped';
 
             let testsRun = [];
             if (clientRan) testsRun.push('✅ Client: Lint + Build');
