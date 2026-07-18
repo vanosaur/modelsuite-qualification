@@ -20,12 +20,22 @@ const IconPlus = () => (
   </svg>
 );
 
+/* ── Menu icon ── */
+const IconMenu = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+);
+
 const AdminDashboard = () => {
   const [tasks, setTasks]           = useState([]);
   const [showCreate, setShowCreate] = useState(false);
   const [editTask, setEditTask]     = useState(null);
   const [search, setSearch]         = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const loadTasks = async () => {
     try {
@@ -63,29 +73,33 @@ const AdminDashboard = () => {
   });
 
   return (
-    <div className="flex min-h-screen" style={{ background: "#050505" }}>
-      <Sidebar />
+    <div className="flex min-h-screen overflow-hidden" style={{ background: "#050505" }}>
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       <main
-        className="flex-1 lg:ml-[240px] px-4 lg:px-8 py-8"
-        style={{
-          width: "100%",
-          maxWidth: "100%",
-        }}
+        className="flex-1 lg:ml-[240px] px-4 lg:px-8 py-8 w-full max-w-full overflow-x-hidden"
       >
         {/* Page header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7 page-section">
-          <div>
-            <h1
-              className="font-display text-[22px] font-semibold tracking-tight"
-              style={{ color: "#F0F0F0", fontFamily: "Poppins, sans-serif" }}
+          <div className="flex items-center gap-3">
+            <button 
+              className="lg:hidden text-gray-400 hover:text-white"
+              onClick={() => setIsSidebarOpen(true)}
             >
-              Task Management
-            </h1>
-            <p className="mt-0.5 text-[13px]" style={{ color: "#6B7280" }}>
+              <IconMenu />
+            </button>
+            <div>
+              <h1
+                className="font-display text-[22px] font-semibold tracking-tight"
+                style={{ color: "#F0F0F0", fontFamily: "Poppins, sans-serif" }}
+              >
+                Task Management
+              </h1>
+              <p className="mt-0.5 text-[13px]" style={{ color: "#6B7280" }}>
               Create, assign, and track all tasks across your talent pool.
             </p>
           </div>
+        </div>
 
           <button
             onClick={() => setShowCreate(true)}

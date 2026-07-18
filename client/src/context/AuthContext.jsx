@@ -1,4 +1,5 @@
-﻿import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+import API from '../api/axios';
 
 const AuthContext = createContext(null);
 
@@ -17,12 +18,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     if (user?.token) {
       try {
-        await fetch("http://localhost:5001/api/auth/logout", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        await API.post('/auth/logout');
       } catch (error) {
         console.error(error);
       }

@@ -13,6 +13,9 @@ const blacklistedTokenSchema = new mongoose.Schema(
   }
 );
 
+// Automatically delete documents 7 days after creation (matches JWT expiration of 7d)
+blacklistedTokenSchema.index({ createdAt: 1 }, { expireAfterSeconds: 7 * 24 * 60 * 60 });
+
 module.exports = mongoose.model(
   "BlacklistedToken",
   blacklistedTokenSchema

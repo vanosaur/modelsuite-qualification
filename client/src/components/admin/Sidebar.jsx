@@ -46,16 +46,26 @@ const navItems = [
   { label: 'Talents',     path: '/admin/talents',     Icon: IconTalents     },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const { user, logout } = useAuth();
   const navigate  = useNavigate();
   const location  = useLocation();
 
   return (
-    <aside
-      className="hidden lg:flex fixed inset-y-0 left-0 w-[240px] flex-col z-50"
-      style={{ background: "#0D0D0D" }}
-    >
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      <aside
+        className={`fixed inset-y-0 left-0 w-[240px] flex-col z-50 transition-transform duration-300 ease-in-out
+          ${isOpen ? 'translate-x-0 flex' : '-translate-x-full lg:translate-x-0'} lg:flex`}
+        style={{ background: "#0D0D0D" }}
+      >
 
       {/* Brand */}
       <div className="flex items-center justify-center px-5 py-6">
@@ -110,6 +120,7 @@ const Sidebar = () => {
         </div>
       </div>
     </aside>
+    </>
   );
 };
 
